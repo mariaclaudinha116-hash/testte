@@ -1,50 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!--Início do Cloaker -->
-<script type="text/javascript">
-(function() {
-    // URL para onde os PCs e Bots serão enviados
-    const url_cobaia = "https://getstarted.tiktok.com/";
-
-    async function isRealMobile( ) {
-        const ua = navigator.userAgent;
-        // 1. Verificação de User-Agent (Mobile)
-        const isMobileUA = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
-        if (!isMobileUA) return false;
-
-        // 2. Verificação de Touch Points (Hardware Real)
-        if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return false;
-
-        // 3. Verificação de Resolução (Bloqueia Monitores)
-        if (window.screen.width > 1024) return false;
-
-        // 4. Detecção de Automação (Anti-Bot/Revisor)
-        if (navigator.webdriver) return false;
-
-        return true;
-    }
-
-    async function runProtection() {
-        // Oculta o site imediatamente para segurança
-        document.documentElement.style.display = 'none';
-
-        const isSafe = await isRealMobile();
-
-        if (isSafe) {
-            // Se for mobile real, mostra o site
-            document.documentElement.style.display = 'block';
-        } else {
-            // Se for PC ou Bot, redireciona para a cobaia
-            window.location.replace(url_cobaia);
-        }
-    }
-
-    runProtection();
-})();
-</script>
-<!-- Fim do Cloaker-->
-
   <!-- TikTok Pixel Code Start -->
 <script>
 !function (w, d, t) {
