@@ -116,8 +116,8 @@ async function initPixPayment() {
   showLoading(true);
 
   try {
-    // Chama o backend seguro (Vercel API)
-    const response = await fetch('/api/gerar-pix', {
+    // Chama o backend seguro (Netlify Function)
+    const response = await fetch('/.netlify/functions/gerar-pix', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount: state.total }),
