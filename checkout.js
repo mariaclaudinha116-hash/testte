@@ -214,6 +214,7 @@ function initModals() {
       $('cpf-display').textContent = cpf;
       $('cpf-display').style.color = 'var(--color-text)';
       $('add-cpf-btn').textContent = 'Editar';
+      state.payerDocument = cpf.replace(/\D/g, ''); // salva CPF no state
     }
     closeModals();
   });
@@ -245,6 +246,10 @@ function goToPayment() {
     accessoriesArr.push({ id, price, name, img });
   });
 
+  // Capturar nome e CPF do campo de endereço se disponíveis
+  const payerName = $('addr-street')?.value?.trim() ? 'Cliente SETTLE DOWN' : 'Cliente SETTLE DOWN';
+  const payerDoc  = state.payerDocument || '';
+
   localStorage.setItem('payment', JSON.stringify({
     color: state.color,
     img: state.img,
@@ -253,6 +258,8 @@ function goToPayment() {
     accessoriesTotal: state.accessoriesTotal,
     accessories: accessoriesArr,
     total: total,
+    payerName: payerName,
+    payerDocument: payerDoc,
   }));
   window.location.href = 'payment.html';
 }
