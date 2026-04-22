@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Pagamento PIX - Pedido criado com sucesso. Escaneie o QR Code ou copie o código PIX para finalizar seu pagamento.">
+  <title>Pagamento PIX | SETTLE DOWN</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="payment.css">
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="payment-header" id="payment-header">
+  <div class="payment-header-content">
+    <div>
+      <h1 class="payment-header-title">Pedido criado com sucesso!</h1>
+      <p class="payment-header-sub">Realize o pagamento para confirmar</p>
+    </div>
+  </div>
+</header>
+
+<!-- ========== MAIN ========== -->
+<main class="page payment-page">
+
+  <!-- ===== PIX SECTION ===== -->
+  <section class="payment-section pix-section" aria-label="Pagamento PIX">
+    <div class="pix-brand">
+      <div class="pix-logo">PIX</div>
+      <span style="font-size:13px;color:var(--color-text-secondary)">Pagamento via PIX • Aprovação instantânea</span>
+    </div>
+
+    <p class="pix-instruction">Escaneie o QR Code ou copie o código PIX para pagar</p>
+
+    <!-- QR Code -->
+    <div class="qr-wrapper" role="img" aria-label="QR Code PIX para pagamento">
+      <canvas id="qr-canvas" width="240" height="240"></canvas>
+    </div>
+
+    <!-- Amount -->
+    <div class="pix-amount">
+      <span style="font-size:14px;color:var(--color-text-secondary)">Valor a pagar</span>
+      <div class="pix-amount-value text-action font-bold" id="pix-amount">R$ 39,90</div>
+    </div>
+
+    <!-- Expiry countdown -->
+    <div class="pix-expiry">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+      Este código expira em <strong id="pix-timer">30:00</strong>
+    </div>
+
+    <!-- PIX Code -->
+    <div class="pix-code-section" aria-label="Código PIX para copiar e colar">
+      <div class="pix-code-label">Código PIX (Copia e Cola):</div>
+      <div class="pix-code-box">
+        <code class="pix-code-text" id="pix-code" aria-label="Código PIX">00020126580014br.gov.bcb.pix0136a4ef0f9c-fb8d-4432-8c35-5a4a35e52a5c5204000053039865406101.805802BR5913SETTLEDOWN6009SAO PAULO62070503***63041234</code>
+      </div>
+      <button class="pix-copy-btn" id="pix-copy-btn" aria-label="Copiar código PIX">
+        📋 Copiar código PIX
+      </button>
+    </div>
+  </section>
+
+  <!-- Aviso: Cartão desabilitado -->
+  <section class="payment-section" aria-label="Forma de pagamento">
+    <div class="card-disabled-notice">
+      <div class="card-disabled-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      </div>
+      <div class="card-disabled-text">
+        <div class="card-disabled-title">Cartão de crédito indisponível</div>
+        <div class="card-disabled-desc">Para garantir o desconto especial de <strong>-73%</strong>, este produto aceita exclusivamente pagamento via <strong>PIX</strong>. Outras formas de pagamento não estão habilitadas para esta oferta.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== ORDER SUMMARY ===== -->
+  <section class="payment-section" aria-label="Resumo do pedido">
+    <h2 class="section-title">Resumo do pedido</h2>
+
+    <!-- Produto principal -->
+    <div class="order-summary-card">
+      <img src="book_rosa.png" alt="Livro Interativo com Som" class="summary-thumb" id="pay-product-img">
+      <div class="summary-details">
+        <div class="font-semibold" style="font-size:13px;line-height:1.4;margin-bottom:6px">Livro Interativo com Som – Touch &amp; Sound Bilíngue</div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:2px">Cor: <strong id="pay-color">Rosa</strong></div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">Quantidade: <strong id="pay-qty">1</strong></div>
+        <div class="text-action font-bold" style="font-size:18px" id="pay-subtotal">R$ 39,90</div>
+      </div>
+    </div>
+
+    <!-- Acessórios adicionados -->
+    <div id="pay-accessories-list" style="margin-top:12px"></div>
+
+    <!-- Tabela de totais -->
+    <div class="pay-summary-table" style="margin-top:16px">
+      <div class="pay-summary-row" id="pay-acc-row" style="display:none">
+        <span style="font-size:13px;color:var(--color-text-secondary)">Acessórios</span>
+        <span style="font-size:13px" id="pay-acc-val">R$ 0,00</span>
+      </div>
+      <div class="pay-summary-row pay-summary-total">
+        <span>Total pago</span>
+        <span class="text-action" id="pay-total">R$ 39,90</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== STATUS STEPS ===== -->
+  <section class="payment-section" aria-label="Status do pedido">
+    <h2 class="section-title">Acompanhe seu pedido</h2>
+    <div class="status-steps">
+      <div class="status-step active">
+        <div class="step-icon step-done">✓</div>
+        <div class="step-info">
+          <div class="step-title">Pedido criado</div>
+          <div class="step-sub">Agora há pouco</div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="status-step waiting">
+        <div class="step-icon step-waiting">⏳</div>
+        <div class="step-info">
+          <div class="step-title">Aguardando pagamento</div>
+          <div class="step-sub">Pague via PIX</div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="status-step">
+        <div class="step-icon step-pending">📦</div>
+        <div class="step-info">
+          <div class="step-title">Em preparação</div>
+          <div class="step-sub">Após confirmação</div>
+        </div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="status-step">
+        <div class="step-icon step-pending">🚚</div>
+        <div class="step-info">
+          <div class="step-title">A caminho</div>
+          <div class="step-sub">2 de mai – 7 de mai</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== ACTIONS ===== -->
+  <section class="payment-section payment-actions" aria-label="Ações pós-compra">
+    <p class="payment-info-text">
+      Você será notificado assim que o pagamento for confirmado.
+    </p>
+    <a href="index.html" class="btn-action" role="button">
+      🏪 Voltar à loja
+    </a>
+    <div class="payment-security">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Pagamento 100% seguro e criptografado</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- QRCode.js – gerador de QR Code real -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<script src="payment.js"></script>
+</body>
+</html>

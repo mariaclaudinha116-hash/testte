@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Resumo do pedido - Livro Interativo com Som Touch & Sound Bilíngue. Revise seu pedido antes de finalizar a compra.">
+  <title>Resumo do Pedido | SETTLE DOWN</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="checkout.css">
+</head>
+<body>
+
+<!-- ========== OVERLAY ========== -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ========== HEADER ========== -->
+<header class="checkout-header" id="checkout-header">
+  <button class="icon-btn" id="back-btn" aria-label="Voltar">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+  </button>
+  <div class="checkout-header-title">
+    <span>Resumo do pedido</span>
+    <span class="checkout-header-sub">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00C853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>
+      Cancelamento fácil
+    </span>
+  </div>
+  <div style="width:40px"></div>
+</header>
+
+<!-- ========== MAIN ========== -->
+<main class="page checkout-page">
+
+  <!-- ===== DELIVERY DATA ===== -->
+  <section class="checkout-section" aria-label="Dados de entrega">
+    <div class="delivery-field">
+      <span class="delivery-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </span>
+      <div class="delivery-field-text">
+        <span class="text-secondary" style="font-size:13px" id="addr-display">Endereço de envio</span>
+      </div>
+      <button class="link-btn" id="add-addr-btn">+ Adicionar endereço</button>
+    </div>
+    <div class="delivery-field">
+      <span class="delivery-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+      </span>
+      <div class="delivery-field-text">
+        <span class="text-secondary" style="font-size:13px" id="cpf-display">CPF (opcional)</span>
+      </div>
+      <button class="link-btn" id="add-cpf-btn">+ Adicionar CPF</button>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== STORE INFO ===== -->
+  <section class="checkout-section" aria-label="Informações da loja">
+    <div class="store-row">
+      <span class="font-bold" style="font-size:15px">SETTLE DOWN</span>
+      <button class="link-btn small" id="add-note-btn">Adicionar nota &gt;</button>
+    </div>
+    <div class="store-badge">
+      ⭐ <span class="text-action font-semibold">Loja Oficial!</span> 2.745 vendido(s) e com nota 4.9/5,0
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== ORDER ITEM ===== -->
+  <section class="checkout-section" aria-label="Item do pedido">
+    <div class="order-item">
+      <img src="book_rosa.png" alt="Livro Interativo com Som" class="order-item-img" id="co-item-img">
+      <div class="order-item-info">
+        <div class="font-semibold" style="font-size:13px;line-height:1.4;margin-bottom:6px">Livro Interativo com Som – Touch & Sound Bilíngue</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+          <span class="badge badge-orange">⚡ Oferta Relâmpago</span>
+          <span class="badge badge-green">🟢 Devolução gratuita</span>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">Cor: <strong id="size-display">Rosa</strong></div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:4px">
+          <span class="text-action font-bold" style="font-size:20px" id="item-price">R$ 39,90</span>
+          <span class="strike" style="font-size:12px">R$ 147,90</span>
+          <span class="text-action" style="font-size:11px;font-weight:600">-73%</span>
+        </div>
+      </div>
+    </div>
+    <div class="qty-row">
+      <button class="qty-btn-sm" id="co-qty-minus" aria-label="Diminuir">−</button>
+      <input type="number" class="qty-input-sm" id="co-qty-input" value="1" min="1" max="99" inputmode="numeric">
+      <button class="qty-btn-sm" id="co-qty-plus" aria-label="Aumentar">+</button>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== ORDER SUMMARY ===== -->
+  <section class="checkout-section" aria-label="Resumo do pedido">
+    <h2 class="section-title">Resumo do pedido</h2>
+    <div class="summary-table">
+      <div class="summary-row">
+        <span>Subtotal do produto</span>
+        <span id="subtotal-val">R$ 39,90</span>
+      </div>
+      <div class="summary-row">
+        <span>Preço original</span>
+        <span>R$ 147,90</span>
+      </div>
+      <div class="summary-row">
+        <span>Desconto Imposto</span>
+        <span class="text-action" id="discount-val">-R$ 108,00</span>
+      </div>
+      <div class="summary-row" id="accessories-row" style="display:none">
+        <span>Acessórios</span>
+        <span id="accessories-val">R$ 0,00</span>
+      </div>
+      <div class="summary-divider"></div>
+      <div class="summary-row summary-total">
+        <span>Total</span>
+        <span class="text-action" id="total-val">R$ 39,90</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== ACCESSORIES ===== -->
+  <section class="checkout-section" aria-label="Produtos complementares com desconto">
+    <h2 class="section-title">🎁 Complementa seu pedido!</h2>
+    <!-- Urgency Banner -->
+    <div class="accessories-urgency">
+      ⚡ <strong>OFERTA EXCLUSIVA:</strong> Adicione agora e ganhe <strong>70% de desconto</strong> nesses produtos!
+    </div>
+    <div class="accessories-grid" id="accessories-grid">
+      <!-- Acessório 1 -->
+      <div class="accessory-card" data-id="1" data-price="9.90" data-orig="32.90">
+        <div class="acc-discount-badge">-70%</div>
+        <img src="acc_canetinha.png" alt="Canetinha Bobbie Goods" loading="lazy">
+        <div class="accessory-info">
+          <div class="accessory-name">Canetinha Bobbie Goods 12 cores</div>
+          <div class="accessory-orig">R$ 32,90</div>
+          <div class="accessory-price text-action font-bold">R$ 9,90</div>
+        </div>
+        <button class="accessory-add-btn" data-id="1">+ Adicionar</button>
+      </div>
+      <!-- Acessório 2 -->
+      <div class="accessory-card" data-id="2" data-price="12.90" data-orig="42.90">
+        <div class="acc-discount-badge">-70%</div>
+        <img src="acc_caderno.png" alt="Caderno Bobbie Goods" loading="lazy">
+        <div class="accessory-info">
+          <div class="accessory-name">Caderno Espiral Bobbie Goods</div>
+          <div class="accessory-orig">R$ 42,90</div>
+          <div class="accessory-price text-action font-bold">R$ 12,90</div>
+        </div>
+        <button class="accessory-add-btn" data-id="2">+ Adicionar</button>
+      </div>
+      <!-- Acessório 3 -->
+      <div class="accessory-card" data-id="3" data-price="19.90" data-orig="64.90">
+        <div class="acc-discount-badge">-70%</div>
+        <img src="acc_livro_gospel.png" alt="Livro Gospel Interativo" loading="lazy">
+        <div class="accessory-info">
+          <div class="accessory-name">Livro Infantil Gospel Interativo</div>
+          <div class="accessory-orig">R$ 64,90</div>
+          <div class="accessory-price text-action font-bold">R$ 19,90</div>
+        </div>
+        <button class="accessory-add-btn" data-id="3">+ Adicionar</button>
+      </div>
+      <!-- Acessório 4 -->
+      <div class="accessory-card" data-id="4" data-price="14.90" data-orig="49.90">
+        <div class="acc-discount-badge">-70%</div>
+        <img src="acc_flash_cards.png" alt="Flash Cards Bilíngue" loading="lazy">
+        <div class="accessory-info">
+          <div class="accessory-name">Flash Cards Bilíngue PT/EN</div>
+          <div class="accessory-orig">R$ 49,90</div>
+          <div class="accessory-price text-action font-bold">R$ 14,90</div>
+        </div>
+        <button class="accessory-add-btn" data-id="4">+ Adicionar</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ===== TERMS ===== -->
+  <section class="checkout-section" aria-label="Termos e condições">
+    <p style="font-size:12px;color:var(--color-text-secondary);line-height:1.7">
+      Ao fazer um pedido, você concorda com os
+      <a href="#" class="text-blue">Termos de uso e venda da SETTLE DOWN</a>
+      e reconhece que leu e concordou com a
+      <a href="#" class="text-blue">Política de privacidade</a>.
+    </p>
+  </section>
+
+  <!-- ===== SAVINGS ALERT ===== -->
+  <section class="savings-alert" aria-label="Economia">
+    😊 <span class="text-action font-bold" style="font-size:16px">Você está economizando <span id="savings-display">R$ 108,00</span> com impostos</span>
+  </section>
+
+  <!-- ===== SOCIAL PROOF ===== -->
+  <div class="social-proof-banner" id="social-proof">
+    <span class="proof-check">✓</span>
+    <div>
+      <div style="font-size:13px;font-weight:600">Rafael M. acabou de comprar!</div>
+      <div style="font-size:11px;color:var(--color-text-secondary)">São Paulo, SP • há 2 minutos</div>
+      <div style="font-size:11px;color:var(--color-green);font-weight:600">✓ Aguardando envio</div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ========== BOTTOM BAR ========== -->
+<div class="checkout-bottom-bar" aria-label="Resumo e ação final">
+  <div class="checkout-bottom-summary">
+    <div>
+      <span style="font-size:13px;color:var(--color-text-secondary)">Total (<span id="item-count">1</span> item)</span>
+      <div style="font-size:11px;color:var(--color-text-secondary)">Economizando <span class="text-action" id="bar-savings">R$ 108,00</span></div>
+    </div>
+    <div class="text-action font-bold" style="font-size:20px" id="bar-total">R$ 39,90</div>
+  </div>
+  <button class="btn-action" id="place-order-btn">Fazer pedido</button>
+  <div style="text-align:center;font-size:11px;color:var(--color-text-secondary);margin-top:4px">
+    O cupom expira em <strong id="coupon-timer">03:56:22</strong>
+  </div>
+</div>
+
+<!-- ========== ADDRESS MODAL ========== -->
+<div class="modal-sheet" id="addr-modal" role="dialog" aria-modal="true" aria-label="Adicionar endereço">
+  <div class="modal-handle"></div>
+  <div class="addr-modal-content">
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Endereço de entrega</h3>
+    <div class="form-group">
+      <label class="form-label" for="addr-cep">CEP</label>
+      <input type="text" class="form-input" id="addr-cep" placeholder="00000-000" inputmode="numeric" maxlength="9">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="addr-street">Rua / Logradouro</label>
+      <input type="text" class="form-input" id="addr-street" placeholder="Ex: Rua das Flores">
+    </div>
+    <div style="display:flex;gap:12px">
+      <div class="form-group" style="flex:1">
+        <label class="form-label" for="addr-num">Número</label>
+        <input type="text" class="form-input" id="addr-num" placeholder="123" inputmode="numeric">
+      </div>
+      <div class="form-group" style="flex:2">
+        <label class="form-label" for="addr-comp">Complemento</label>
+        <input type="text" class="form-input" id="addr-comp" placeholder="Apto, sala...">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="addr-city">Cidade / Estado</label>
+      <input type="text" class="form-input" id="addr-city" placeholder="São Paulo, SP">
+    </div>
+    <div class="addr-modal-actions">
+      <button class="btn-action" id="save-addr-btn">Confirmar endereço</button>
+      <button class="link-btn" id="skip-addr-btn" style="text-align:center;padding:12px 0;font-size:13px">Adicionar endereço após a compra</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CPF MODAL ========== -->
+<div class="modal-sheet" id="cpf-modal" role="dialog" aria-modal="true" aria-label="Adicionar CPF">
+  <div class="modal-handle"></div>
+  <div class="addr-modal-content">
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:16px">Adicionar CPF</h3>
+    <div class="form-group">
+      <label class="form-label" for="cpf-input">CPF (opcional)</label>
+      <input type="text" class="form-input" id="cpf-input" placeholder="000.000.000-00" inputmode="numeric" maxlength="14">
+    </div>
+    <button class="btn-action" id="save-cpf-btn">Confirmar</button>
+  </div>
+</div>
+
+<script src="checkout.js"></script>
+</body>
+</html>
