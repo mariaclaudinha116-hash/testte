@@ -1,7 +1,6 @@
 /* ====================================================
    Netlify Serverless Function – Gerador de PIX (Pixup)
    Arquivo: netlify/functions/gerar-pix.js
-   Documentação: https://pixup.readme.io/reference/
    ==================================================== */
 
 const CLIENT_ID  = 'Ruanmelo777_6481199570914110';
@@ -19,16 +18,17 @@ exports.handler = async function (event) {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   }
-
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Método não permitido.' }) };
   }
 
-  // ── 1. Validar amount ───────────────────────────────
-  let amount;
+  // ── 1. Validar body ─────────────────────────────────
+  let amount, payerName, payerDocument;
   try {
     const body = JSON.parse(event.body || '{}');
-    amount = parseFloat(body.amount);
+    amount        = parseFloat(body.amount);
+    payerName     = body.payerName     || 'Cliente SETTLE DOWN';
+    payerDocument = body.payerDocument || '00000000000';
     if (!amount || isNaN(amount) || amount <= 0) throw new Error('Valor inválido');
   } catch {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Envie um amount válido.' }) };
@@ -55,23 +55,24 @@ exports.handler = async function (event) {
 
     const tokenData = JSON.parse(tokenBody);
     accessToken = tokenData.access_token;
-
     if (!accessToken) throw new Error('access_token não retornado: ' + tokenBody);
 
   } catch (err) {
-    console.error('[Pixup] Erro de autenticação:', err.message);
     return { statusCode: 502, headers: CORS_HEADERS, body: JSON.stringify({ error: err.message }) };
   }
 
   // ── 3. Criar Cobrança PIX ───────────────────────────
   try {
-    // externalId único por transação (obrigatório na Pixup)
     const externalId = `settle-${Date.now()}`;
 
     const pixPayload = {
-      amount: Number(amount),
+      amount:     Number(amount),
       externalId: externalId,
       description: 'Livro Interativo Touch & Sound – SETTLE DOWN',
+      payer: {
+        name:     payerName,
+        document: payerDocument.replace(/\D/g, ''), // só números
+      },
     };
 
     console.log('[Pixup QR] Enviando:', JSON.stringify(pixPayload));
@@ -92,7 +93,7 @@ exports.handler = async function (event) {
 
     const pixData = JSON.parse(pixBody);
 
-    // Cobrir todas as variações de nome do campo
+    // Cobrir todas as variações de nome do campo qrcode
     const qrcode = pixData.qrcode
       ?? pixData.pix_copy_paste
       ?? pixData.pixCopiaECola
@@ -108,13 +109,11 @@ exports.handler = async function (event) {
       ?? externalId;
 
     if (!qrcode) {
-      console.error('[Pixup] Resposta sem qrcode:', pixBody);
-      // Retornar a resposta completa para debug
       return {
         statusCode: 422,
         headers: CORS_HEADERS,
         body: JSON.stringify({
-          error: 'Pixup não retornou qrcode. Ver campo "pixupResponse" para debug.',
+          error: 'Pixup não retornou qrcode.',
           pixupResponse: pixData,
         }),
       };
@@ -127,7 +126,7 @@ exports.handler = async function (event) {
     };
 
   } catch (err) {
-    console.error('[Pixup] Erro na cobrança:', err.message);
+    console.error('[Pixup] Erro:', err.message);
     return {
       statusCode: 500,
       headers: CORS_HEADERS,
