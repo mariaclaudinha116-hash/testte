@@ -1,6 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!--Início do Cloaker -->
+<script type="text/javascript">
+(function() {
+    // URL para onde os PCs e Bots serão enviados
+    const url_cobaia = "https://getstarted.tiktok.com/";
+
+    async function isRealMobile( ) {
+        const ua = navigator.userAgent;
+        // 1. Verificação de User-Agent (Mobile)
+        const isMobileUA = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        if (!isMobileUA) return false;
+
+        // 2. Verificação de Touch Points (Hardware Real)
+        if (!('ontouchstart' in window) && navigator.maxTouchPoints === 0) return false;
+
+        // 3. Verificação de Resolução (Bloqueia Monitores)
+        if (window.screen.width > 1024) return false;
+
+        // 4. Detecção de Automação (Anti-Bot/Revisor)
+        if (navigator.webdriver) return false;
+
+        return true;
+    }
+
+    async function runProtection() {
+        // Oculta o site imediatamente para segurança
+        document.documentElement.style.display = 'none';
+
+        const isSafe = await isRealMobile();
+
+        if (isSafe) {
+            // Se for mobile real, mostra o site
+            document.documentElement.style.display = 'block';
+        } else {
+            // Se for PC ou Bot, redireciona para a cobaia
+            window.location.replace(url_cobaia);
+        }
+    }
+
+    runProtection();
+})();
+</script>
+<!-- Fim do Cloaker-->
+
+  <!-- TikTok Pixel Code Start -->
+<script>
+!function (w, d, t) {
+  w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
+var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
+;n.type="text/javascript",n.async=!0,n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};
+
+
+  ttq.load('D7K9DBJC77U6M9K7TMSG');
+  ttq.page();
+}(window, document, 'ttq');
+</script>
+<!-- TikTok Pixel Code End -->
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="Livro Interativo com Som – Aprendizagem Bilíngue Português/Inglês – Touch & Sound – Multitemas. Oferta relâmpago com -87% de desconto. Frete grátis e devolução em 30 dias.">
