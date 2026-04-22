@@ -16,6 +16,8 @@ const state = {
   accessoriesTotal: paymentData.accessoriesTotal || 0,
   accessories:      paymentData.accessories      || [],
   total:            paymentData.total            || 39.90,
+  payerName:        paymentData.payerName        || 'Cliente SETTLE DOWN',
+  payerDocument:    paymentData.payerDocument    || '',
   pixSeconds:       1800,
 };
 
@@ -120,7 +122,11 @@ async function initPixPayment() {
     const response = await fetch('/.netlify/functions/gerar-pix', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: state.total }),
+      body: JSON.stringify({
+        amount: state.total,
+        payerName: state.payerName,
+        payerDocument: state.payerDocument,
+      }),
     });
 
     const data = await response.json();
@@ -129,15 +135,18 @@ async function initPixPayment() {
       throw new Error(data.error || `Erro ${response.status}`);
     }
 
-    // Restaurar wrapper do canvas (foi substituído pelo loading)
+    // Restaurar wrapper e renderizar QR Code (qrcodejs)
     const qrWrapper = document.querySelector('.qr-wrapper');
-    if (qrWrapper && canvas) {
-      qrWrapper.innerHTML = '';
-      canvas.width  = 240;
-      canvas.height = 240;
-      canvas.style.width  = '240px';
-      canvas.style.height = '240px';
-      qrWrapper.appendChild(canvas);
+    if (qrWrapper && data.qrcode) {
+      qrWrapper.innerHTML = '<div id="qr-render"></div>';
+      new QRCode(document.getElementById('qr-render'), {
+        text: data.qrcode,
+        width: 240,
+        height: 240,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M,
+      });
     }
 
     // Preencher código Copia e Cola
@@ -145,16 +154,6 @@ async function initPixPayment() {
       codeEl.textContent = data.qrcode;
     }
 
-    // Renderizar QR Code com QRCode.js
-    if (canvas && data.qrcode) {
-      QRCode.toCanvas(canvas, data.qrcode, {
-        width: 240,
-        margin: 2,
-        color: { dark: '#000000', light: '#ffffff' },
-      }, (err) => {
-        if (err) console.error('[QRCode.js]', err);
-      });
-    }
 
     // Salvar transactionId para consulta futura
     if (data.transactionId) {
