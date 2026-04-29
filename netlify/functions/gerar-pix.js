@@ -64,11 +64,15 @@ exports.handler = async function (event) {
   // ── 3. Criar Cobrança PIX ───────────────────────────
   try {
     const externalId = `settle-${Date.now()}`;
+    const host = event.headers.host || 'localhost';
+    const protocol = host.includes('localhost') ? 'http' : 'https';
+    const postbackUrl = `${protocol}://${host}/.netlify/functions/utmify-webhook`;
 
     const pixPayload = {
       amount:     Number(amount),
       externalId: externalId,
       description: 'Livro Interativo Touch & Sound – SETTLE DOWN',
+      postbackUrl: postbackUrl,
       payer: {
         name:     payerName,
         document: payerDocument.replace(/\D/g, ''), // só números
